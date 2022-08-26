@@ -1,8 +1,12 @@
-class Hangman
-  attr_accessor :word
+require_relative 'display'
 
-  def initializei
+class Hangman
+  include Display
+  attr_reader :word, :grid
+
+  def initialize
     @word = select_word.downcase
+    @grid = grid_layout(word)
   end
 
   def select_word
@@ -13,7 +17,15 @@ class Hangman
       word
     end
   end
+
+  def grid_layout(word)
+    Array.new(word.length - 1, '_')
+  end
+
+  def display_status
+    display_game(word.length, 1, grid)
+  end
 end
 
 hangman = Hangman.new
-puts hangman.select_word
+hangman.display_status
