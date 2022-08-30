@@ -4,4 +4,8 @@ module Display
     puts "You have use #{lives} lives"
     puts grid.join('')
   end
+
+  def display_choice
+    puts 'Choose a letter'
+  end
 end
