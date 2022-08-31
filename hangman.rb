@@ -7,8 +7,8 @@ class Hangman
   attr_reader :word, :grid, :letter
 
   def initialize
-    @word = select_word.downcase
-    @grid = grid_layout(word)
+    @word = select_word().downcase
+    @grid = set_grid(word)
     @letter = get_letter
   end
 
@@ -16,8 +16,8 @@ class Hangman
     open_file()
   end
 
-  def grid_layout(word)
-    Array.new(word.length, '_')
+  def set_grid(word)
+    Array.new(word.length - 1, '_')
   end
 
   def display_status
@@ -26,11 +26,16 @@ class Hangman
 
   def get_letter
     display_choice()
-    set_grid(gets[0].downcase)
+    search_matchers(gets[0].downcase)
   end
 
-  def set_grid(letter)
-    word.index(letter).nil? ? false : @grid[word.index(letter)] = letter
-    # Problem is when there's 2 equal letter, only one is considered
+  def update_grid(indexes, letter)
+    indexes.each { |index| @grid[index] = letter }
+    @grid
+  end
+
+  def search_matchers(letter)
+    indexes = (0 ... word.length).find_all { |i| word[i] == letter }
+    update_grid(indexes, letter)
   end
 end
